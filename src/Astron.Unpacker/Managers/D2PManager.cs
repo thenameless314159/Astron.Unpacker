@@ -34,7 +34,7 @@ namespace Astron.Unpacker.Managers
             var tasks = new List<Task>(filesPath.Length);
             tasks.AddRange(filesPath.Select(d2PFilePath => UnpackD2PFile(d2PFilePath)));
 
-            await Task.WhenAll(tasks).ConfigureAwait(false);
+            await Task.WhenAll(tasks);
         }
 
         public async Task UnpackD2PFile(string path)
@@ -49,15 +49,15 @@ namespace Astron.Unpacker.Managers
             var progressCount = 1;
             var progressBar   = new ProgressBar(PbStyle.SingleLine, archiveUnpacker.Values.Count);
             progressBar.Refresh(0, Path.GetFileName(d2PFile.FullPath));
-            await Task.Delay(10); // doesn't print all either way
+            //await Task.Delay(10); // doesn't print all either way
             foreach (var archive in archiveUnpacker.Values)
             {
                 var filePath      = (_dlmFilesFolder + archive.RelativePath).Replace('/', '\\');
                 var fileDirectory = Path.GetDirectoryName(filePath);
-                var deflatedStream =
-                    new DeflateStream(new MemoryStream(archive.CompressedData), CompressionMode.Decompress);
+                using var decompressedData = new MemoryStream();
+                using var deflatedStream = new DeflateStream(new MemoryStream(archive.CompressedData), 
+                    CompressionMode.Decompress);
 
-                var decompressedData = new MemoryStream();
                 await deflatedStream.CopyToAsync(decompressedData);
                 if (!Directory.Exists(fileDirectory)) Directory.CreateDirectory(fileDirectory);
 
