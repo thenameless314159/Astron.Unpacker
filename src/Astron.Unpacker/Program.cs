@@ -21,7 +21,7 @@ namespace Astron.Unpacker
         private const int    _errorBadArguments       = 0xA0;
         private const int    _errorFileNotFound       = 0x3;
 
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
             DrawAscii();
             var mainSw = Stopwatch.StartNew();
@@ -55,7 +55,7 @@ namespace Astron.Unpacker
                 var d2PFilePaths = Directory.GetFiles(settings.D2PFilesFolder, "*.d2p");
                 var d2PFileManager = new D2PManager(container);
 
-                await d2PFileManager.UnpackAll(d2PFilePaths);
+                d2PFileManager.UnpackAll(d2PFilePaths);
             }
             catch (Exception e)
             {
