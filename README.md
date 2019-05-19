@@ -1,5 +1,5 @@
 # Astron.Unpacker
-File unpacker powered by Astron, currently supporting only .d2p files.
+File unpacker powered by my own [**from scratch library Astron**](https://github.com/thenameless314159/Astron), it currently support only .d2p files.
 
 ![execution](https://i.imgur.com/aWvISMv.gif)
 
